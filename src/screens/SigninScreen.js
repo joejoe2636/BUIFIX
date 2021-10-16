@@ -56,7 +56,7 @@ const SigninScreen = ({navigation})=>{
                     <View style = {styles.link}>
                         <Text>create account? </Text>
                         <TouchableOpacity
-                            onPress = {()=> navigation.navigate("Signup")}
+                            onPress = {()=> navigation.navigate("EngineerFlow")}
                         >
                             <Text style = {{fontSize: 18, color: APP_COLOR}}>Sign up</Text>
                         </TouchableOpacity>

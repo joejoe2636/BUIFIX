@@ -13,7 +13,12 @@ import OwnerEmployeeForm from './src/components/EmployeeForm'
 
 import StockerHomeScreen from './src/screens/stocker/HomeScreen';
 import StockScreen from './src/screens/stocker/StockScreen';
-import { APP_COLOR } from './src/constants/constants'
+import { APP_COLOR } from './src/constants/constants';
+
+import EngineerHomeScreen from './src/screens/engineer/HomeScreen';
+import EmployeeScreen from './src/screens/engineer/EmployeeScreen';
+import PaymentScreen from './src/screens/engineer/PaymentsScreen';
+import EngineerActivityScreen from './src/screens/engineer/ActivityScreen';
 
 const stack = createStackNavigator();
 const tab = createBottomTabNavigator();
@@ -206,6 +211,102 @@ const StockerFlow = ()=>{
 };
 
 
+const EngineerFlow = ()=>{
+  return(
+    <tab.Navigator initialRouteName = "Home"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === 'Home') {
+            return (
+              <MaterialCommunityIcons
+                name={
+                  focused
+                    ? 'home-variant'
+                    : 'home-variant'
+                }
+                size={size}
+                color={color}
+              />
+            );
+          } 
+          else if(route.name == "Activity"){
+            return (
+              <Feather
+                name={
+                  focused
+                    ? 'activity'
+                    : 'activity'
+                }
+                size={size}
+                color={color}
+              />
+            );
+          }else if (route.name === 'Account') {
+            return (
+              <MaterialCommunityIcons 
+                name= {focused ? 'account' : 'account'} 
+                size={size} 
+                color= {color} />
+            );
+          }
+        },
+        tabBarInactiveTintColor: APP_COLOR,
+        tabBarActiveTintColor: 'grey',
+      })}
+      >
+
+      <tab.Screen
+        name = "Activity"
+        component= {EngineerActivityScreen}
+        options = {{
+          title: "ACTIVITIES",
+          headerStyle:{
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+
+
+      <tab.Screen
+        name = "Home"
+        component= {EngineerHomeScreen}
+        options = {{
+          title: "Home",
+          headerStyle:{
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+
+      <tab.Screen
+        name = "Account"
+        component= {AccountScreen}
+        options = {{
+          title: "MY ACCOUNT",
+          headerStyle:{
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+    </tab.Navigator>
+  )
+}
+
 const App = ()=>{
   return(
     <NavigationContainer>
@@ -252,6 +353,22 @@ const App = ()=>{
         <stack.Screen
           name = "StockerFlow"
           component = {StockerFlow}
+          options = {{
+            headerShown: false
+          }}
+        />
+
+        <stack.Screen
+          name = "EngineerFlow"
+          component = {EngineerFlow}
+          options = {{
+            headerShown: false
+          }}
+        />
+
+        <stack.Screen
+          name = "EmployeeManagement"
+          component = {EmployeeScreen}
           options = {{
             headerShown: false
           }}
