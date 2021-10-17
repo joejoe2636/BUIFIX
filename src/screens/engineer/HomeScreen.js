@@ -5,6 +5,7 @@ import { AntDesign, FontAwesome5, FontAwesome   } from '@expo/vector-icons';
 import { BottomSheet } from 'react-native-btr';
 import { TextInput } from 'react-native-gesture-handler';
 
+
 const HomeScreen = ({navigation})=>{
 
     const [addEmployee, setAddEmployee] = useState(false);
@@ -37,7 +38,7 @@ const HomeScreen = ({navigation})=>{
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress = {()=>navigation.navigate("EmployeeForm")}
+                        onPress = {()=>navigation.navigate("EmployeeList")}
                         style = {styles.button}
                         >
                         <AntDesign name="deleteuser" style={[styles.icon, {color: 'red'}]}/>
@@ -48,10 +49,7 @@ const HomeScreen = ({navigation})=>{
                 </View>
 
                 <View style = {styles.button_group}>
-                    <TouchableOpacity
-                        onPress = {()=>navigation.navigate("EmployeeManagement")}
-                        style = {styles.button}
-                        >
+                    <TouchableOpacity onPress = {()=>navigation.navigate("EmployeePayments")} style = {styles.button}>
                         <FontAwesome5  name="amazon-pay" style={styles.icon}/>
                         <View style = {{backgroundColor: APP_COLOR, width: 110, alignItems: 'center', justifyContent: 'center', borderRadius: 5, height: 30}}>
                             <Text style = {styles.buttonTitle}>Employee</Text>
@@ -59,7 +57,7 @@ const HomeScreen = ({navigation})=>{
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress = {()=>navigation.navigate("EmployeeManagement")}
+                        onPress = {()=>navigation.navigate("EmployeeList")}
                         style = {styles.button}
                         >
                         <FontAwesome  name="list-ol" style={styles.icon}/>

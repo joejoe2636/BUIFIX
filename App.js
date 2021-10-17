@@ -311,28 +311,9 @@ const App = ()=>{
   return(
     <NavigationContainer>
       <stack.Navigator>
-        <stack.Screen
-          name = "Signin"
-          component = {SigninScreen}
-          options = {{
-            headerShown: false
-          }}
-        />
-        <stack.Screen
-          name = "Signup"
-          component = {SignupScreen}
-          options = {{
-            headerShown: false
-          }}
-        />
-
-        <stack.Screen
-          name = "OwnerFlow"
-          component = {OwnerFlow}
-          options = {{
-            headerShown: false
-          }}
-        />
+        <stack.Screen name = "Signin" component = {SigninScreen} options = {{ headerShown: false }}/>
+        <stack.Screen name = "Signup" component = {SignupScreen} options = {{ headerShown: false }}/>
+        <stack.Screen name = "OwnerFlow" component = {OwnerFlow} options = {{ headerShown: false }}/>
 
         <stack.Screen
           name = "EmployeeForm"
@@ -350,29 +331,11 @@ const App = ()=>{
           }}
         />
 
-        <stack.Screen
-          name = "StockerFlow"
-          component = {StockerFlow}
-          options = {{
-            headerShown: false
-          }}
-        />
-
-        <stack.Screen
-          name = "EngineerFlow"
-          component = {EngineerFlow}
-          options = {{
-            headerShown: false
-          }}
-        />
-
-        <stack.Screen
-          name = "EmployeeManagement"
-          component = {EmployeeScreen}
-          options = {{
-            headerShown: false
-          }}
-        />
+        <stack.Screen name = "StockerFlow" component = {StockerFlow} options = {{ headerShown: false }}/>
+        <stack.Screen name = "EngineerFlow" component = {EngineerFlow} options = {{ headerShown: false }}/>
+        <stack.Screen name = "EmployeeList" component = {EmployeeScreen} options = {{headerShown: false}}/>
+        <stack.Screen name = "EmployeePayments"component = {PaymentScreen} options = {{headerShown: false}}/>
+      
       </stack.Navigator>
     </NavigationContainer>
   );

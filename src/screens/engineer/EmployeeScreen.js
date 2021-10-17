@@ -1,8 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { APP_COLOR, WIDTH } from '../../constants/constants';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 const Employees = [
@@ -32,6 +33,11 @@ const Employees = [
 const EmployeeScreen = ({navigation})=>{
     return(
         <View style={{marginTop: 50, flex: 1}}>
+            <TouchableOpacity
+                onPress={()=>navigation.goBack()}
+            >
+                <Ionicons name="arrow-back" size={30} color={APP_COLOR} style={{marginLeft: 10}} />
+            </TouchableOpacity>
 
             <Text style={{fontWeight: 'bold', fontSize: 25, alignSelf: 'center', color:APP_COLOR}}>Wage Employee List</Text>
 
