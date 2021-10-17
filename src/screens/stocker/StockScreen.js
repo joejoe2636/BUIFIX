@@ -1,39 +1,18 @@
-import React from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import { HEIGHT, WIDTH } from '../../constants/constants';
+import { MaterialForm } from '../../components/MaterialForm';
+import { BottomSheet } from 'react-native-btr';
+import { stock } from '../../api/buifixApi';
 
-const StockScreen = ({navigation})=>{
+const StockScreen = ()=>{
 
-    const stock = [
-        {
-            mid: 1,
-            name: 'ciment',
-            qauntity: 25,
-            unityPrice: 100000,
-            activity: 'roof'
-        },
-        {
-            mid: 2,
-            name: 'ferabe',
-            qauntity: 25,
-            unityPrice: 100000,
-            activity: 'roof'
-        },
-        {
-            mid: 3,
-            name: 'sss',
-            qauntity: 25,
-            unityPrice: 100000,
-            activity: 'roof'
-        },
-        {
-            mid: 4,
-            name: 'bbbb',
-            qauntity: 25,
-            unityPrice: 100000,
-            activity: 'roof'
-        }
-    ]
+    const [materialId, setMaterialId] = useState('');
+    const [quantity, setQuantity] = useState('');
+    const [action, setAction] = useState('');
+    const [materialFormVisibility, setMaterialFormVisibility] = useState(false);
+
+
     return(
         <View style = {styles.container}>
             <View style = {styles.header}>
@@ -47,18 +26,37 @@ const StockScreen = ({navigation})=>{
                 keyExtractor = {stock => stock.name} 
                 renderItem = {({index, item})=>{
                     return (
-                        <View>
+                        <TouchableOpacity
+                            onPress = {()=>{
+                                setAction("Export")
+                                setMaterialId(item.mid)
+                                setQuantity(item.qauntity)
+                                setMaterialFormVisibility(true);
+                            }}
+                        >
                             <View style = {styles.row}>
                                 <Text style = {{fontWeight: 'bold'}}>{item.mid}</Text>
                                 <Text style = {{fontWeight: 'bold'}}>{item.name}</Text>
                                 <Text>{item.qauntity}</Text>
                                 <Text>{item.unityPrice} Rwf</Text>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                        
                     )
                 }}
             />
+
+            <BottomSheet visible = {materialFormVisibility}>
+                <MaterialForm
+                    cleanForm = {()=>cleanMaterialForm()}
+                    materialId = {materialId}
+                    quantity = {quantity}
+                    setMaterialId = {(mid)=> setMaterialId(mid) }
+                    setQuantity = {(quantity)=> setQuantity(quantity) }
+                    action = {action}
+                    changeFormVisiblity = {(value) =>setMaterialFormVisibility(value)}
+                />
+            </BottomSheet>
         </View>
     );
 };

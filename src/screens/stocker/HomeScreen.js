@@ -1,17 +1,32 @@
 import React, {useState} from 'react';
 import { View, Text,Modal, TouchableOpacity, Image, SafeAreaView, StyleSheet} from 'react-native';
-import { APP_COLOR, HEIGHT, WIDTH } from '../../constants/constants';
+import { BottomSheet } from 'react-native-btr';
 import EmployeeModel from '../../components/EmployeeModel';
+import { MaterialForm } from '../../components/MaterialForm';
+import { APP_COLOR, HEIGHT, WIDTH } from '../../constants/constants';
+
 
 const HomeScreen = ({navigation})=>{
 
     const [isModelVisible, setIsModelVisible] = useState(false);
     const [option, setOption] = useState('');
 
+    const [materialId, setMaterialId] = useState(null);
+    const [quantity, setQuantity] = useState(null);
+    const [action, setAction] = useState('');
+    const [materialFormVisibility, setMaterialFormVisibility] = useState(false);
+
 
     const changeModelVisible = (bool)=>{
         setIsModelVisible(bool);
     }
+
+    const cleanMaterialForm = ()=>{
+        setMaterialId(null);
+        setQuantity(null);
+    }
+
+
     return(
         <SafeAreaView style = {styles.container}>
             {option ? <Text>{option}</Text> : null}
@@ -26,15 +41,21 @@ const HomeScreen = ({navigation})=>{
             </View>
             <View>
                 <TouchableOpacity
-                    onPress = {()=>changeModelVisible(true)}
+                    onPress = {()=>{
+                        setAction('Import');
+                        setMaterialFormVisibility(true)
+                    }}
                     style = {styles.button}
                 >
                     <Text style = {styles.buttonTitle}>Import Materials</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                    onPress = {()=>{
+                        setAction('Export');
+                        setMaterialFormVisibility(true)
+                    }}
                     style = {styles.button}
-                    onPress = {()=>navigation.navigate("EmployeeForm")}
                 >
                     <Text style = {styles.buttonTitle}>Export Materials</Text>
                 </TouchableOpacity>
@@ -51,6 +72,18 @@ const HomeScreen = ({navigation})=>{
                     />           
                 </Modal>
             </View>
+
+            <BottomSheet visible = {materialFormVisibility}>
+                <MaterialForm
+                    cleanForm = {()=>cleanMaterialForm()}
+                    materialId = {materialId}
+                    quantity = {quantity}
+                    setMaterialId = {(mid)=> setMaterialId(mid) }
+                    setQuantity = {(quantity)=> setQuantity(quantity) }
+                    action = {action}
+                    changeFormVisiblity = {(value) =>setMaterialFormVisibility(value)}
+                />
+            </BottomSheet>
             
         </SafeAreaView>
     );
@@ -60,14 +93,12 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-        // backgroundColor: '#94c4d8'
+        justifyContent: 'center'
     },
     header: {
         height: HEIGHT * .1,
         width: WIDTH,
-        marginTop: 20,
-        // backgroundColor: 'red'
+        marginTop: 20
     },
     headerTitle:{
         fontSize: 20,
