@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet} from 'react-native';
 import { APP_COLOR, HEIGHT, WIDTH } from '../constants/constants';
+import { AboutUs } from '../components/AboutUs';
+import { TermAndCondition } from '../components/TermAndCondition';
+import { BottomSheet } from 'react-native-btr';
 
 const AccountScreen = ({navigation})=>{
+
+    const [aboutusVisibiity, setAboutusVisiblity] = useState(false);
+    const [termandConditionVisibiity, setTermandConditionVisibiity] = useState(false);
+
     return(
         <SafeAreaView style = {styles.container}>
             <View style= {styles.header}>
@@ -21,6 +28,7 @@ const AccountScreen = ({navigation})=>{
 
             <View >
                 <TouchableOpacity
+                    onPress = {()=> setAboutusVisiblity(true)}
                     style = {styles.button}
                 >
                     <Text style = {styles.buttonTitle}>About</Text>
@@ -28,6 +36,7 @@ const AccountScreen = ({navigation})=>{
                 </TouchableOpacity>
 
                 <TouchableOpacity
+                    onPress = {()=> setTermandConditionVisibiity(true)}
                     style = {styles.button}
                 >
                     <Text style = {styles.buttonTitle}>Term and Conditions</Text>
@@ -50,6 +59,13 @@ const AccountScreen = ({navigation})=>{
                 </TouchableOpacity>
             </View>
 
+            <BottomSheet visible = {aboutusVisibiity}>
+                <AboutUs changeVisibility = {()=> setAboutusVisiblity(false)}/>
+            </BottomSheet>
+
+            <BottomSheet visible = {termandConditionVisibiity}>
+                <TermAndCondition changeVisibility = {()=> setTermandConditionVisibiity(false)}/>
+            </BottomSheet>
             
         </SafeAreaView>
     );

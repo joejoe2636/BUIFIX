@@ -52,7 +52,7 @@ const EmployeeScreen = ({navigation})=>{
                     keyExtractor = {employee => employee.nid}
                     renderItem = {({item, index})=>{
                         return(
-                            <View style = {{justifyContent: 'space-between', flexDirection: 'row', borderBottomWidth: .5, borderBottomColor: 'grey', backgroundColor: index % 2 ===0 ? 'pink': null, marginTop: 15, alignSelf: 'center', width: WIDTH -10}}>
+                            <View style = {{justifyContent: 'space-between', flexDirection: 'row', borderBottomWidth: .5, borderBottomColor: 'grey', backgroundColor: index % 2 ===0 ? '#50b1cc5555': null, marginTop: 15, alignSelf: 'center', width: WIDTH -10}}>
                                 <Text style={{fontSize: 16}}>{item.nid}</Text>
                                 <Text>{item.names}</Text>
                                 <Text>{item.wage}</Text>
