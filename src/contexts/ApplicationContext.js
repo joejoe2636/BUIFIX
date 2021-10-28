@@ -35,7 +35,6 @@ const navigateTo = (userType, navigation)=>{
 
 const signup = dispatch => async({fname, lname, email, phone, country, nid, password}, navigation, closeActivityIndicator)=>{
     try {
-        console.log({fname, lname, email, phone, country, nid, password})
         const response = await buifixApi.post('/users/signup', { fname, lname, email, phone, country, nid, password});
         const { message, status, user}  = response.data;
         
