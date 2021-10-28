@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet} from 'react-native';
 import { APP_COLOR, HEIGHT, WIDTH } from '../constants/constants';
 import { AboutUs } from '../components/AboutUs';
 import { TermAndCondition } from '../components/TermAndCondition';
 import { BottomSheet } from 'react-native-btr';
+import { Context } from '../contexts/ApplicationContext';
+import { AppActivityIndictor } from '../components/AppActivityIndictor';
 
 const AccountScreen = ({navigation})=>{
 
+    const {state, signout } = useContext(Context);
+    const { user } = state;
+
+    // useEffect(()=>{
+    //     console.log({state})
+    // }, [])
+
     const [aboutusVisibiity, setAboutusVisiblity] = useState(false);
     const [termandConditionVisibiity, setTermandConditionVisibiity] = useState(false);
+    const [showActivityIndicator, setShowActivityIndicator] = useState(false)
 
     return(
         <SafeAreaView style = {styles.container}>
@@ -16,12 +26,13 @@ const AccountScreen = ({navigation})=>{
                 <Image
                     style = {styles.image}
                     source = {require('../../assets/construction.png')}
+                    source = {{uri: user.avatar}}
                 />
                 <View>
-                    <Text style = {styles.names}>Emmanuel</Text>
-                    <Text style = {styles.names}>NTIVUGURUZWA</Text>
+                    <Text style = {styles.names}>{user.fname}</Text>
+                    <Text style = {styles.names}>{user.lname}</Text>
                     <View style = {styles.userTypeCard}>
-                        <Text style = {styles.userType}>Owner</Text>
+                        <Text style = {styles.userType}>{user.userType === 0 ? "Owner" : "Employee"}</Text>
                     </View>
                 </View>
             </View>
@@ -52,7 +63,14 @@ const AccountScreen = ({navigation})=>{
 
                 <TouchableOpacity
                     style = {styles.button}
-                    onPress = {()=>navigation.navigate("Signin")}
+                    onPress = {()=>{
+                        setShowActivityIndicator(true);
+
+                        signout(state.user.token, ()=>{
+                            setShowActivityIndicator(false);
+                            navigation.navigate("Signin")
+                        })
+                    }}
                 >
                     <Text style = {styles.buttonTitle}>Sign out</Text>
                     <Text style = {styles.buttonDescription}>@emmanuel</Text>
@@ -67,6 +85,9 @@ const AccountScreen = ({navigation})=>{
                 <TermAndCondition changeVisibility = {()=> setTermandConditionVisibiity(false)}/>
             </BottomSheet>
             
+            <BottomSheet visible = {showActivityIndicator}>
+                <AppActivityIndictor/>
+            </BottomSheet>
         </SafeAreaView>
     );
 };
@@ -95,7 +116,8 @@ const styles = StyleSheet.create({
         borderBottomWidth: .5
     },
     names:{
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: 18
     },
     userTypeCard:{
         backgroundColor: APP_COLOR,

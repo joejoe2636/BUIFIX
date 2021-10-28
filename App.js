@@ -3,6 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Provider as AuthProvider } from './src/contexts/ApplicationContext';
+import SplashScreen from './src/screens/SplashScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import AccountScreen from './src/screens/AccountScreen';
@@ -310,7 +312,8 @@ const EngineerFlow = ()=>{
 const App = ()=>{
   return(
     <NavigationContainer>
-      <stack.Navigator>
+      <stack.Navigator initialRouteName = "Splash">
+        <stack.Screen name = "Splash" component = {SplashScreen} options = {{ headerShown: false }}/>
         <stack.Screen name = "Signin" component = {SigninScreen} options = {{ headerShown: false }}/>
         <stack.Screen name = "Signup" component = {SignupScreen} options = {{ headerShown: false }}/>
         <stack.Screen name = "OwnerFlow" component = {OwnerFlow} options = {{ headerShown: false }}/>
@@ -343,6 +346,8 @@ const App = ()=>{
 
 export default ()=>{
   return(
-    <App/>
+    <AuthProvider>
+      <App/>
+    </AuthProvider>
   );
 };

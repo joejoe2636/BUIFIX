@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {useEffect, useContext} from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet} from 'react-native';
 import { APP_COLOR, HEIGHT, WIDTH } from '../../constants/constants';
+import { Context as AppContext } from '../../contexts/ApplicationContext';
 
 const HomeScreen = ({navigation})=>{
+
+    const {state} = useContext(AppContext);
+    const { user } = state
+
+    // useEffect(()=>{
+    //     console.log(state)
+    // })
+
     return(
         <SafeAreaView style = {styles.container}>
             <View style = {styles.header}>
-                <Text style = {styles.headerTitle}>Hello Emmanuel</Text>
+                <Text style = {styles.headerTitle}>Hello {user.fname}</Text>
             </View>
             <View style = {styles.advat}>
                 <Image
@@ -16,7 +25,7 @@ const HomeScreen = ({navigation})=>{
             </View>
             <View>
                 <TouchableOpacity
-                    onPress = {()=>navigation.navigate("EmployeeForm")}
+                    onPress = {()=>navigation.navigate("EmployeeForm", {employeeType: 'engineer'})}
                     style = {styles.button}
                 >
                     <Text style = {styles.buttonTitle}>Add enginer</Text>
@@ -24,7 +33,7 @@ const HomeScreen = ({navigation})=>{
 
                 <TouchableOpacity
                     style = {styles.button}
-                    onPress = {()=>navigation.navigate("EmployeeForm")}
+                    onPress = {()=>navigation.navigate("EmployeeForm", {employeeType: 'stoker'})}
                 >
                     <Text style = {styles.buttonTitle}>add stok manager</Text>
                 </TouchableOpacity>
