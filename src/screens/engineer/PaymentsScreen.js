@@ -1,35 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 import { APP_COLOR, WIDTH } from '../../constants/constants';
 import { MaterialIcons, Entypo, Ionicons   } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BottomSheet } from 'react-native-btr';
+import buifixApi from '../../api/buifixApi';
+import { Context as AuthContext } from '../../contexts/ApplicationContext';
+import { AppActivityIndictor } from '../../components/AppActivityIndictor';
 
 
-const Employees = [
-    {
-        names: 'Emmanuel NT.',
-        nid: '11998800616325',
-        wage: 20000
-    },
-    {
-        names: 'Michel DU.',
-        nid: '11998800616326',
-        wage: 20000
-    },
-    {
-        names: 'Rabah SIGENIYO',
-        nid: '11998800616327',
-        wage: 20000
-    },
-    {
-        names: 'RUKUNDO Jean',
-        nid: '11998800616328',
-        wage: 20000
+const fetchAllEmployee = async(token, setEmployees, setShowActivityIndicator)=>{
+    try {
+        setShowActivityIndicator(true);
+        const response = await buifixApi.get('/users/wage/employees',{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const {status, message, numberOfEmployees, employees} = response.data;
+
+        if(status === 200){
+            setEmployees(employees)
+            setShowActivityIndicator(false)
+        }
+
+    } catch (error) {
+        setShowActivityIndicator(false);
     }
-]
-
+}
 
 const PaymentScreen = ({navigation})=>{
+
+    const [showActivityIndicator, setShowActivityIndicator] = useState(false)
+    const [Employees, setEmployees] = useState([]);
+
+    const { state } = useContext(AuthContext);
+    const { token } = state;
+
+    useEffect(()=>{
+        fetchAllEmployee(token, setEmployees, setShowActivityIndicator);
+    }, [])
+
+
     return(
         <View style={{marginTop: 50, flex: 1}}>
 
@@ -69,6 +82,9 @@ const PaymentScreen = ({navigation})=>{
                 />
             </View>
 
+            <BottomSheet visible = {showActivityIndicator}>
+                <AppActivityIndictor/>
+            </BottomSheet>
         </View>
     );
 };

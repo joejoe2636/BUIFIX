@@ -1,23 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, Dimensions, SafeAreaView, StyleSheet} from 'react-native';
 import { APP_COLOR, HEIGHT, WIDTH } from '../../constants/constants';
 import { AntDesign, FontAwesome5, FontAwesome   } from '@expo/vector-icons';
 import { BottomSheet } from 'react-native-btr';
+import { AppActivityIndictor } from '../../components/AppActivityIndictor';
 import { TextInput } from 'react-native-gesture-handler';
+import { Context as DataContext } from '../../contexts/ApplicationContext';
 
 
 const HomeScreen = ({navigation})=>{
 
+    const [showActivityIndicator, setShowActivityIndicator] = useState(false)
+    const { state, registerWageEmployee } = useContext(DataContext);
+    const { user, errorMessage, token } = state;
+
+    // useEffect(()=>{
+    //     console.log(state);
+    // }, []);
+
     const [addEmployee, setAddEmployee] = useState(false);
     const {height: HEIGHT, width: WIDTH } = Dimensions.get('screen')
     const[employee_name, setEmployeeName]= useState('');
+    const[employee_phone, setEmployeePhone]= useState('');
     const[employee_nid, setEmployeeNid]= useState('');
     const[employee_wage, setEmployeeWage]= useState('');
 
     return(
         <SafeAreaView style = {styles.container}>
             <View style = {styles.header}>
-                <Text style = {styles.headerTitle}>Hello Emmanuel</Text>
+                <Text style = {styles.headerTitle}>Hello Engineer {user.fname}</Text>
+                {errorMessage? <Text>{errorMessage}</Text> : null}
             </View>
             <View style = {styles.advat}>
                 <Image
@@ -38,7 +50,7 @@ const HomeScreen = ({navigation})=>{
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress = {()=>navigation.navigate("EmployeeList")}
+                        onPress = {()=>navigation.navigate("EmployeeList", {action: "deleteEmployee"})}
                         style = {styles.button}
                         >
                         <AntDesign name="deleteuser" style={[styles.icon, {color: 'red'}]}/>
@@ -57,7 +69,7 @@ const HomeScreen = ({navigation})=>{
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress = {()=>navigation.navigate("EmployeeList")}
+                        onPress = {()=>navigation.navigate("EmployeeList", {action: "employeeList"})}
                         style = {styles.button}
                         >
                         <FontAwesome  name="list-ol" style={styles.icon}/>
@@ -73,9 +85,9 @@ const HomeScreen = ({navigation})=>{
                 <ScrollView>
                     <View style={{
                         backgroundColor: '#fff', 
-                        height: '40%', 
+                        height: 350, 
                         width: WIDTH, 
-                        marginVertical: HEIGHT * 0.3,
+                        marginVertical: HEIGHT * 0.25,
                         borderRadius: 20,
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -93,13 +105,26 @@ const HomeScreen = ({navigation})=>{
                     />
 
                     <TextInput
+                        placeholder = "Phone Number"
+                        autoCapitalize = "none"
+                        autoCorrect = {false}
+                        keyboardType = "number-pad"
+                        value={employee_phone}
+                        maxLength = {10}
+                        minLength = {10}
+                        onChangeText = {(phone)=> setEmployeePhone(phone)}
+                        style={{width: '80%', height: 60, fontSize: 18, borderBottomColor: employee_phone.length === 10 || employee_phone.length === 0 ? 'grey' : 'red', color: employee_phone.length === 10 || employee_phone.length === 0 ? 'grey' : 'red', borderBottomWidth: .5}}
+                    />
+                    <TextInput
                         placeholder = "National Id"
                         autoCapitalize = "none"
                         autoCorrect = {false}
                         keyboardType = "number-pad"
                         value={employee_nid}
+                        maxLength = {16}
+                        minLength = {16}
                         onChangeText = {(id)=> setEmployeeNid(id)}
-                        style={{width: '80%', height: 60, fontSize: 18, borderBottomColor: 'grey', borderBottomWidth: .5}}
+                        style={{width: '80%', height: 60, fontSize: 18, borderBottomColor: employee_nid.length === 16 || employee_nid.length === 0 ? 'grey' : 'red', color: employee_nid.length === 16 || employee_nid.length === 0 ? 'grey' : 'red', borderBottomWidth: .5}}
                     />
 
                     <TextInput
@@ -118,7 +143,26 @@ const HomeScreen = ({navigation})=>{
                                 <Text style = {{color: '#fff', fontSize: 18, fontWeight: 'bold'}}>Cancel</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress = {()=>setAddEmployee(false)} style={{backgroundColor: 'green', width: 100, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
+                            <TouchableOpacity style={{backgroundColor: 'green', width: 100, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 10}}
+                                onPress = {()=>{
+                                    if(employee_nid.length !== 16){
+                                        return;
+                                    }
+
+                                    if(employee_wage.length < 2){
+                                        return;
+                                    }
+
+                                    if(employee_name.length < 4){
+                                        return;
+                                    }
+
+                                    setAddEmployee(false)
+
+                                    setShowActivityIndicator(true)
+                                    registerWageEmployee({names: employee_name, nid: employee_nid, phone: employee_phone, wage: employee_wage, token}, closeActivityIndicator = ()=> setShowActivityIndicator(false))
+                                }} 
+                             >
                                 <Text style = {{color: '#fff', fontSize: 18, fontWeight: 'bold'}}>Save</Text>
                             </TouchableOpacity>
                         </View>
@@ -126,6 +170,10 @@ const HomeScreen = ({navigation})=>{
                 
                     </View>
                 </ScrollView>
+            </BottomSheet>
+
+            <BottomSheet visible = {showActivityIndicator}>
+                <AppActivityIndictor/>
             </BottomSheet>
             
         </SafeAreaView>

@@ -124,11 +124,28 @@ const registerEmployee = dispatch => async({fname, lname, nid, email, salary, pa
     }
 }
 
+const registerWageEmployee = dispatch => async({names, nid, phone, wage, token}, closeActivityIndicator)=>{
+    try {
+        const response = await buifixApi.post('/users/register/wage_employee', {
+            names, nid, phone, wage
+        },{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        closeActivityIndicator();
+    } catch (error) {
+        closeActivityIndicator();
+        dispatch({type: 'set_error', payload: error.response.data.error})
+    }
+}
+
 const setErrorMessage = dispatch =>(error)=> dispatch({type: 'set_error', payload: error})
 const clearErrorMessage = dispatch =>()=> dispatch({type: 'clear_error'})
 
 export const { Context, Provider } = createDataContext(
     AuthReducer,
-    { signup, signin, tryLocalSignin, signout, registerEmployee, setErrorMessage, clearErrorMessage},
+    { signup, signin, tryLocalSignin, signout, registerEmployee, registerWageEmployee, setErrorMessage, clearErrorMessage},
     {user: null, token: null, errorMessage: ''}
 )

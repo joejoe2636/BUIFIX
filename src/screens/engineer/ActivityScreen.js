@@ -1,11 +1,74 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { View, Text, TouchableOpacity, FlatList, SafeAreaView, StyleSheet} from 'react-native';
 import { APP_COLOR, HEIGHT, WIDTH } from '../../constants/constants';
 import { Entypo, MaterialIcons  } from '@expo/vector-icons';
 import { BottomSheet } from 'react-native-btr';
 import { NewActivityForm } from '../../components/NewActivityForm';
 import { UpdateActivityForm } from '../../components/UpdateActivityForm';
-import { activites } from '../../api/buifixApi';
+import buifixApi from '../../api/buifixApi';
+import { AppActivityIndictor } from '../../components/AppActivityIndictor';
+import { Context as AuthContext } from '../../contexts/ApplicationContext';
+
+const registerActivity = async(name, budget, token, setErrorMessage, setShowActivityIndicator)=>{
+    try {
+        setShowActivityIndicator(true)
+        const response = await buifixApi.post('/users/register/activity', {
+            name, budget
+        },{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        setShowActivityIndicator(false)
+        setErrorMessage('')
+    } catch (error) {
+        setShowActivityIndicator(false)
+        setErrorMessage(error.response.data.errorMessage)
+    }
+}
+
+const fetchAllActivity = async(token, setActivity, setShowActivityIndicator, setErrorMessage)=>{
+
+    try {
+        setShowActivityIndicator(true);
+        const response = await buifixApi.get('/users/actities',{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const {status, message, actities} = response.data;
+
+        if(status === 200){
+            setActivity(actities)
+            setShowActivityIndicator(false)
+        }
+        setErrorMessage('')
+    } catch (error) {
+        setShowActivityIndicator(false)
+        setErrorMessage(error.response.data.errorMessage)
+    }
+}
+
+const updateActivityProgress = async(token, activityId, newExpenses, setShowActivityIndicator,setErrorMessage)=>{
+    try {
+        setShowActivityIndicator(true)
+        const response = await buifixApi.patch(`/users/employees/actities/${activityId}?expenses=${newExpenses}`, {
+            
+        },{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        setShowActivityIndicator(false)
+        setErrorMessage('')
+    } catch (error) {
+        setShowActivityIndicator(false)
+        setErrorMessage(error.response.data.errorMessage)
+    }
+}
 
 
 const ActivityScreen = ()=>{
@@ -14,11 +77,23 @@ const ActivityScreen = ()=>{
     const [expenses, setExpenses] = useState(null);
     const [visibleNewActivityFom, setvisibleNewActivityFom ] = useState(false)
     const [updateActivityFormVisibility, setUpdateActivityFormVisibility ] = useState(false)
+    const [showActivityIndicator, setShowActivityIndicator] = useState(false)
+    const [activites, setActivity] = useState([])
+    const [activityId, setActivityId ] = useState('');
+
+    const { state } = useContext(AuthContext);
+    const { token } = state;
+    const [errorMessage, setErrorMessage ] = useState('')
+
 
     const clearNewActivityForm = ()=>{
         setActivityName('')
         setActivityBudget(null)
     }
+
+    useEffect(()=>{
+        fetchAllActivity(token, setActivity, setShowActivityIndicator, setErrorMessage)
+    }, [])
 
     return(
         <SafeAreaView>
@@ -30,12 +105,19 @@ const ActivityScreen = ()=>{
                     <Text style = {{fontSize: 20, fontWeight: 'bold', color: '#fff'}}>Activity</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{backgroundColor: APP_COLOR, borderWidth: 1, borderRadius: 10, width: '40%', height: 50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}>
+                <TouchableOpacity style={{backgroundColor: APP_COLOR, borderWidth: 1, borderRadius: 10, width: '40%', height: 50, justifyContent: 'center', alignItems: 'center', flexDirection: 'row'}}
+                    onPress = {()=> {
+                        fetchAllActivity(token, setActivity, setShowActivityIndicator, setErrorMessage)
+                    }}
+                  >
                     <MaterialIcons  name="update" size={35} color= "#fff" />
                     <Text style = {{fontSize: 20, fontWeight: 'bold', color: "#fff"}}>Activity</Text>
                 </TouchableOpacity>
 
             </View>
+            
+            {errorMessage ? <Text style = {{ alignSelf: 'center', color: 'red', marginTop: 10}}>{errorMessage}</Text> : null}
+            
             <FlatList
                 data = {activites}
                 keyExtractor = {activity => activity.name}
@@ -43,7 +125,10 @@ const ActivityScreen = ()=>{
                     return(
                         <View>
                             <TouchableOpacity 
-                                onPress = {()=> setUpdateActivityFormVisibility(true)}
+                                onPress = {()=> {
+                                    setActivityId(item._id)
+                                    setUpdateActivityFormVisibility(true);
+                                }}
                                 style = {styles.activity}>
                                 <View style = {styles.card}>
                                     <Text style = {styles.title}>{item.name}</Text>
@@ -61,12 +146,12 @@ const ActivityScreen = ()=>{
 
                                     <View style={styles.row}>
                                         <Text style = {styles.key}>Rest : </Text>
-                                        <Text style = {styles.value}> {item.rest} Rwf</Text>
+                                        <Text style = {styles.value}> {item.budget - item.expenses} Rwf</Text>
                                     </View>
 
                                     <View style={styles.row}>
                                         <Text style = {styles.key}>Progress : </Text>
-                                        <Text style = {styles.value}> {item.progress}</Text>
+                                        <Text style = {styles.value}> {(item.expenses * 100) / item.budget} %</Text>
                                     </View>
                                 </View>
                                 
@@ -84,6 +169,7 @@ const ActivityScreen = ()=>{
                     setActivityName = {(name)=> setActivityName(name)} 
                     setActivityBudget = {(budget)=> setActivityBudget(budget)}
                     changeFormVisiblity = {(value)=> setvisibleNewActivityFom(value)}
+                    saveActivity = {()=> registerActivity(activityName, activityBudget, token, setErrorMessage, setShowActivityIndicator)}
                 />
             </BottomSheet>
 
@@ -93,7 +179,14 @@ const ActivityScreen = ()=>{
                     expenses = {expenses}
                     addExpenses = {(expenses)=> setExpenses(expenses)}
                     changeFormVisiblity = {(value)=> setUpdateActivityFormVisibility(value)}
+                    updateActivityProgress = {()=>{
+                        updateActivityProgress(token, activityId, expenses, setShowActivityIndicator, setErrorMessage );
+                    }}
                 />
+            </BottomSheet>
+
+            <BottomSheet visible = {showActivityIndicator}>
+                <AppActivityIndictor/>
             </BottomSheet>
         </SafeAreaView>
     );
@@ -122,7 +215,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#d9d9d4',
         justifyContent: 'center',
         borderRadius: 15,
-        paddingHorizontal: 20,
+        paddingHorizontal: 50,
+        // width: '80%',
         paddingVertical: 20,
         marginTop: 25
     },

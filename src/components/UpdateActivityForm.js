@@ -4,7 +4,7 @@ import { APP_COLOR, HEIGHT } from '../constants/constants';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-const UpdateActivityForm = ({ cleanForm, expenses, addExpenses, changeFormVisiblity})=>{
+const UpdateActivityForm = ({ cleanForm, expenses, addExpenses, changeFormVisiblity, updateActivityProgress})=>{
 
     return(
         <ScrollView>
@@ -35,6 +35,7 @@ const UpdateActivityForm = ({ cleanForm, expenses, addExpenses, changeFormVisibl
                         onPress = {()=>{
                             cleanForm();
                             changeFormVisiblity(false);
+                            updateActivityProgress()
                         }}
                         style={{backgroundColor: APP_COLOR, borderRadius: 5, alignItems: 'center', justifyContent: 'center',  width: 80, height: 40}}>
                         <Text style={{color: '#fff', fontSize: 20, fontWeight: 'bold'}}>Save</Text>
