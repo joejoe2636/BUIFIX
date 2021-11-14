@@ -26,10 +26,10 @@ const navigateTo = (userType, navigation)=>{
             return navigation.navigate("OwnerFlow")
         case 1:
             return navigation.navigate("EngineerFlow")
-        case 1:
+        case 2:
             return navigation.navigate("StockerFlow")
         default:
-            return dispatch({type: 'set_error', payload: "something went wrong"})
+            return state;
     }
 }
 
@@ -65,6 +65,7 @@ const signin = dispatch => async({email, password}, closeActivityIndicator, navi
         navigateTo(user.userType, navigation)
 
     } catch (error) {
+        console.log("error")
         closeActivityIndicator()
         dispatch({type: 'set_error', payload: error.response.data.error})
     }

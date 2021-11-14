@@ -1,16 +1,12 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useContext} from 'react';
 import { View, Text, TouchableOpacity, Image, SafeAreaView, StyleSheet} from 'react-native';
 import { APP_COLOR, HEIGHT, WIDTH } from '../../constants/constants';
 import { Context as AppContext } from '../../contexts/ApplicationContext';
 
+
 const HomeScreen = ({navigation})=>{
-
     const {state} = useContext(AppContext);
-    const { user } = state
-
-    // useEffect(()=>{
-    //     console.log(state)
-    // })
+    const { user} = state;
 
     return(
         <SafeAreaView style = {styles.container}>
@@ -38,7 +34,6 @@ const HomeScreen = ({navigation})=>{
                     <Text style = {styles.buttonTitle}>add stok manager</Text>
                 </TouchableOpacity>
             </View>
-            
         </SafeAreaView>
     );
 };

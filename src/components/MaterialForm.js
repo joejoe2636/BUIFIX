@@ -4,7 +4,7 @@ import { APP_COLOR, HEIGHT } from '../constants/constants';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
-const MaterialForm = ({cleanForm, materialId, setMaterialId, quantity, setQuantity, action, changeFormVisiblity})=>{
+const MaterialForm = ({cleanForm, materialId, setMaterialId, quantity, setQuantity, action, changeFormVisiblity, movMaterial})=>{
 
     return(
         <ScrollView>
@@ -43,6 +43,7 @@ const MaterialForm = ({cleanForm, materialId, setMaterialId, quantity, setQuanti
                         onPress = {()=>{
                             cleanForm;
                             changeFormVisiblity(false);
+                            movMaterial()
                         }}
                         style={{backgroundColor: APP_COLOR, borderRadius: 5, alignItems: 'center', justifyContent: 'center',  width: 80, height: 40}}>
                         <Text style={{color: '#fff', fontSize: 20, fontWeight: 'bold'}}>{action}</Text>
