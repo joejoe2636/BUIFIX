@@ -13,11 +13,6 @@ const HomeScreen = ({navigation})=>{
     const [showActivityIndicator, setShowActivityIndicator] = useState(false)
     const { state, registerWageEmployee } = useContext(DataContext);
     const { user, errorMessage, token } = state;
-
-    // useEffect(()=>{
-    //     console.log(state);
-    // }, []);
-
     const [addEmployee, setAddEmployee] = useState(false);
     const {height: HEIGHT, width: WIDTH } = Dimensions.get('screen')
     const[employee_name, setEmployeeName]= useState('');

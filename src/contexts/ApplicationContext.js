@@ -5,6 +5,9 @@ import buifixApi from '../api/buifixApi';
 
 const AuthReducer = (state, action)=>{
 
+    let employees = null;
+    let remainedEmployeeList = null;
+
     switch(action.type){
         case 'signin':
             return {...state, user: action.payload.user, token: action.payload.token}
@@ -13,7 +16,26 @@ const AuthReducer = (state, action)=>{
             return { ...state, errorMessage: action.payload}
         case 'clear_error':
             return { ...state, errorMessage: ''}
-        
+
+        case 'add_payed_employee':
+            remainedEmployeeList = state.employeeList;
+            employees = state.paidEmployee;
+            employees.push(action.payload);
+            remainedEmployeeList = remainedEmployeeList.filter((employee)=> employee != action.payload)
+            return { ...state,employeeList: remainedEmployeeList, paidEmployee: employees}
+
+        case 'add_un_payed_employee':
+            remainedEmployeeList = state.employeeList;
+            employees = state.unpaidEmployee;
+            employees.push(action.payload);
+            remainedEmployeeList = remainedEmployeeList.filter((employee)=> employee != action.payload)
+            return { ...state, employeeList: remainedEmployeeList, unpaidEmployee: employees}
+
+        case 'update_employee_list':
+            return { ...state, employeeList: action.payload}
+
+        case 'clear_cookies':
+            return { ... state, paidEmployee: [], unpaidEmployee: [], employeeList: []}
         default:
             return state
     };
@@ -141,12 +163,30 @@ const registerWageEmployee = dispatch => async({names, nid, phone, wage, token},
         dispatch({type: 'set_error', payload: error.response.data.error})
     }
 }
+const payWageEmployee = dispatch => async({employees, token}, closeActivityIndicator)=> {
+    try {
+        await buifixApi.post('/users/pay/wage_employee', employees, {
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        });
+        resetCookies();
+        closeActivityIndicator();
+    } catch (error) {
+        closeActivityIndicator();
+        console.log({error: error.response.data})
+        dispatch({type: 'set_error', payload: error.response.data.error})
+    }
+}
 
+const addPaidEmployee = dispatch => (employee)=> dispatch({type: 'add_payed_employee', payload: employee})
+const addUnPaidEmployee = dispatch => (employee)=> dispatch({type: 'add_un_payed_employee', payload: employee})
+const updateEmployeeList = dispatch => (employee)=> dispatch({type: 'update_employee_list', payload: employee})
 const setErrorMessage = dispatch =>(error)=> dispatch({type: 'set_error', payload: error})
 const clearErrorMessage = dispatch =>()=> dispatch({type: 'clear_error'})
-
+const resetCookies = dispatch => ()=> dispatch({type: 'clear_cookies'})
 export const { Context, Provider } = createDataContext(
     AuthReducer,
-    { signup, signin, tryLocalSignin, signout, registerEmployee, registerWageEmployee, setErrorMessage, clearErrorMessage},
-    {user: null, token: null, errorMessage: ''}
+    { signup, signin, tryLocalSignin, signout, registerEmployee, registerWageEmployee,addPaidEmployee, addUnPaidEmployee, updateEmployeeList, payWageEmployee, setErrorMessage, clearErrorMessage},
+    {user: null, token: null, errorMessage: '', paidEmployee: [], unpaidEmployee: [], employeeList: []}
 )
