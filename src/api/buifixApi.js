@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export default axios.create({
-    baseURL:'https://buifix-api.nextreflexe.com'
+    baseURL: '38.242.156.44:3000'
 });
