@@ -25,197 +25,9 @@ import EngineerActivityScreen from './src/screens/engineer/ActivityScreen';
 const stack = createStackNavigator();
 const tab = createBottomTabNavigator();
 
-const OwnerFlow = ()=>{
-  return(
-    <tab.Navigator initialRouteName = "Home"
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        if (route.name === 'Home') {
-          return (
-            <MaterialCommunityIcons
-              name={
-                focused
-                  ? 'home-variant'
-                  : 'home-variant'
-              }
-              size={size}
-              color={color}
-            />
-          );
-        } 
-        else if(route.name == "Activity"){
-          return (
-            <Feather
-              name={
-                focused
-                  ? 'activity'
-                  : 'activity'
-              }
-              size={size}
-              color={color}
-            />
-          );
-        }else if (route.name === 'Account') {
-          return (
-            <MaterialCommunityIcons 
-              name= {focused ? 'account' : 'account'} 
-              size={size} 
-              color= {color} />
-          );
-        }
-      },
-      tabBarInactiveTintColor: APP_COLOR,
-      tabBarActiveTintColor: 'grey',
-    })}
-    >
-      <tab.Screen
-        name = "Activity"
-        component = {OwnerActivityScreen}
-        options = {{
-          title: "ACTIVITIES",
-          headerStyle:{
-            backgroundColor: APP_COLOR
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-      <tab.Screen
-        name = "Home"
-        component = {OwnerHomeScreen}
-        options = {{
-          title: "Home",
-          headerStyle:{
-            backgroundColor: APP_COLOR
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-
-      <tab.Screen
-        name = "Account"
-        component = {AccountScreen}
-        options = {{
-          title: "MY ACCOUNT",
-          headerStyle:{
-            backgroundColor: APP_COLOR
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-    </tab.Navigator>  
-  )
-};
-
-
-const StockerFlow = ()=>{
-  return(
-    <tab.Navigator initialRouteName = "Home"
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        if (route.name === 'Home') {
-          return (
-            <MaterialCommunityIcons
-              name={
-                focused
-                  ? 'home-variant'
-                  : 'home-variant'
-              }
-              size={size}
-              color={color}
-            />
-          );
-        } 
-        else if(route.name == "Stock"){
-          return (
-            <Feather
-              name={
-                focused
-                  ? 'command'
-                  : 'command'
-              }
-              size={size}
-              color={color}
-            />
-          );
-        }else if (route.name === 'Account') {
-          return (
-            <MaterialCommunityIcons 
-              name= {focused ? 'account' : 'account'} 
-              size={size} 
-              color= {color} />
-          );
-        }
-      },
-      tabBarInactiveTintColor: APP_COLOR,
-      tabBarActiveTintColor: 'grey',
-    })}
-    >
-      <tab.Screen
-        name = "Stock"
-        component = {StockScreen}
-        options = {{
-          title: "Stock",
-          headerStyle:{
-            backgroundColor: APP_COLOR
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-      <tab.Screen
-        name = "Home"
-        component = {StockerHomeScreen}
-        options = {{
-          title: "Home",
-          headerStyle:{
-            backgroundColor: APP_COLOR
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-
-      <tab.Screen
-        name = "Account"
-        component = {AccountScreen}
-        options = {{
-          title: "MY ACCOUNT",
-          headerStyle:{
-            backgroundColor: APP_COLOR
-          },
-          headerTintColor: '#fff',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTitleAlign: 'center'
-        }}
-      />
-    </tab.Navigator>  
-  )
-};
-
-
-const EngineerFlow = ()=>{
-  return(
-    <tab.Navigator initialRouteName = "Home"
+const OwnerFlow = () => {
+  return (
+    <tab.Navigator initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Home') {
@@ -230,8 +42,8 @@ const EngineerFlow = ()=>{
                 color={color}
               />
             );
-          } 
-          else if(route.name == "Activity"){
+          }
+          else if (route.name == "Activity") {
             return (
               <Feather
                 name={
@@ -243,26 +55,25 @@ const EngineerFlow = ()=>{
                 color={color}
               />
             );
-          }else if (route.name === 'Account') {
+          } else if (route.name === 'Account') {
             return (
-              <MaterialCommunityIcons 
-                name= {focused ? 'account' : 'account'} 
-                size={size} 
-                color= {color} />
+              <MaterialCommunityIcons
+                name={focused ? 'account' : 'account'}
+                size={size}
+                color={color} />
             );
           }
         },
         tabBarInactiveTintColor: APP_COLOR,
         tabBarActiveTintColor: 'grey',
       })}
-      >
-
+    >
       <tab.Screen
-        name = "Activity"
-        component= {EngineerActivityScreen}
-        options = {{
+        name="Activity"
+        component={OwnerActivityScreen}
+        options={{
           title: "ACTIVITIES",
-          headerStyle:{
+          headerStyle: {
             backgroundColor: APP_COLOR
           },
           headerTintColor: '#fff',
@@ -272,14 +83,12 @@ const EngineerFlow = ()=>{
           headerTitleAlign: 'center'
         }}
       />
-
-
       <tab.Screen
-        name = "Home"
-        component= {EngineerHomeScreen}
-        options = {{
+        name="Home"
+        component={OwnerHomeScreen}
+        options={{
           title: "Home",
-          headerStyle:{
+          headerStyle: {
             backgroundColor: APP_COLOR
           },
           headerTintColor: '#fff',
@@ -291,11 +100,203 @@ const EngineerFlow = ()=>{
       />
 
       <tab.Screen
-        name = "Account"
-        component= {AccountScreen}
-        options = {{
+        name="Account"
+        component={AccountScreen}
+        options={{
           title: "MY ACCOUNT",
-          headerStyle:{
+          headerStyle: {
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+    </tab.Navigator>
+  )
+};
+
+
+const StockerFlow = () => {
+  return (
+    <tab.Navigator initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === 'Home') {
+            return (
+              <MaterialCommunityIcons
+                name={
+                  focused
+                    ? 'home-variant'
+                    : 'home-variant'
+                }
+                size={size}
+                color={color}
+              />
+            );
+          }
+          else if (route.name == "Stock") {
+            return (
+              <Feather
+                name={
+                  focused
+                    ? 'command'
+                    : 'command'
+                }
+                size={size}
+                color={color}
+              />
+            );
+          } else if (route.name === 'Account') {
+            return (
+              <MaterialCommunityIcons
+                name={focused ? 'account' : 'account'}
+                size={size}
+                color={color} />
+            );
+          }
+        },
+        tabBarInactiveTintColor: APP_COLOR,
+        tabBarActiveTintColor: 'grey',
+      })}
+    >
+      <tab.Screen
+        name="Stock"
+        component={StockScreen}
+        options={{
+          title: "Stock",
+          headerStyle: {
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+      <tab.Screen
+        name="Home"
+        component={StockerHomeScreen}
+        options={{
+          title: "Home",
+          headerStyle: {
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+
+      <tab.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{
+          title: "MY ACCOUNT",
+          headerStyle: {
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+    </tab.Navigator>
+  )
+};
+
+
+const EngineerFlow = () => {
+  return (
+    <tab.Navigator initialRouteName="Home"
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          if (route.name === 'Home') {
+            return (
+              <MaterialCommunityIcons
+                name={
+                  focused
+                    ? 'home-variant'
+                    : 'home-variant'
+                }
+                size={size}
+                color={color}
+              />
+            );
+          }
+          else if (route.name == "Activity") {
+            return (
+              <Feather
+                name={
+                  focused
+                    ? 'activity'
+                    : 'activity'
+                }
+                size={size}
+                color={color}
+              />
+            );
+          } else if (route.name === 'Account') {
+            return (
+              <MaterialCommunityIcons
+                name={focused ? 'account' : 'account'}
+                size={size}
+                color={color} />
+            );
+          }
+        },
+        tabBarInactiveTintColor: APP_COLOR,
+        tabBarActiveTintColor: 'grey',
+      })}
+    >
+
+      <tab.Screen
+        name="Activity"
+        component={EngineerActivityScreen}
+        options={{
+          title: "ACTIVITIES",
+          headerStyle: {
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center',
+
+        }}
+      />
+
+
+      <tab.Screen
+        name="Home"
+        component={EngineerHomeScreen}
+        options={{
+          title: "Home",
+          headerStyle: {
+            backgroundColor: APP_COLOR
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+          headerTitleAlign: 'center'
+        }}
+      />
+
+      <tab.Screen
+        name="Account"
+        component={AccountScreen}
+        options={{
+          title: "MY ACCOUNT",
+          headerStyle: {
             backgroundColor: APP_COLOR
           },
           headerTintColor: '#fff',
@@ -309,21 +310,21 @@ const EngineerFlow = ()=>{
   )
 }
 
-const App = ()=>{
-  return(
+const App = () => {
+  return (
     <NavigationContainer>
-      <stack.Navigator initialRouteName = "Splash">
-        <stack.Screen name = "Splash" component = {SplashScreen} options = {{ headerShown: false }}/>
-        <stack.Screen name = "Signin" component = {SigninScreen} options = {{ headerShown: false }}/>
-        <stack.Screen name = "Signup" component = {SignupScreen} options = {{ headerShown: false }}/>
-        <stack.Screen name = "OwnerFlow" component = {OwnerFlow} options = {{ headerShown: false }}/>
+      <stack.Navigator initialRouteName="Splash">
+        <stack.Screen name="Splash" component={SplashScreen} options={{ headerShown: false }} />
+        <stack.Screen name="Signin" component={SigninScreen} options={{ headerShown: false }} />
+        <stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
+        <stack.Screen name="OwnerFlow" component={OwnerFlow} options={{ headerShown: false }} />
 
         <stack.Screen
-          name = "EmployeeForm"
-          component = {OwnerEmployeeForm}
-          options = {{
+          name="EmployeeForm"
+          component={OwnerEmployeeForm}
+          options={{
             title: "Employee Form",
-            headerStyle:{
+            headerStyle: {
               backgroundColor: APP_COLOR
             },
             headerTintColor: '#fff',
@@ -334,20 +335,20 @@ const App = ()=>{
           }}
         />
 
-        <stack.Screen name = "StockerFlow" component = {StockerFlow} options = {{ headerShown: false }}/>
-        <stack.Screen name = "EngineerFlow" component = {EngineerFlow} options = {{ headerShown: false }}/>
-        <stack.Screen name = "EmployeeList" component = {EmployeeScreen} options = {{headerShown: false}}/>
-        <stack.Screen name = "EmployeePayments"component = {PaymentScreen} options = {{headerShown: false}}/>
-      
+        <stack.Screen name="StockerFlow" component={StockerFlow} options={{ headerShown: false }} />
+        <stack.Screen name="EngineerFlow" component={EngineerFlow} options={{ headerShown: false }} />
+        <stack.Screen name="EmployeeList" component={EmployeeScreen} options={{ headerShown: false }} />
+        <stack.Screen name="EmployeePayments" component={PaymentScreen} options={{ headerShown: false }} />
+
       </stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default ()=>{
-  return(
+export default () => {
+  return (
     <AuthProvider>
-      <App/>
+      <App />
     </AuthProvider>
   );
 };

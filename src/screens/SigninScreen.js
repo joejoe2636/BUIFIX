@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, Platform, StatusBar, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 import { HEIGHT, WIDTH, APP_COLOR } from '../constants/constants';
 import { Context as AuthContext } from '../contexts/ApplicationContext';
@@ -14,6 +14,13 @@ const SigninScreen = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [showActivityIndicator, setShowActivityIndicator] = useState(false)
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            clearErrorMessage()
+        });
+        return unsubscribe;
+    }, [navigation]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -73,7 +80,10 @@ const SigninScreen = ({ navigation }) => {
                             }
 
                             setShowActivityIndicator(true)
-                            signin({ email, password }, closeActivityIndicator = () => setShowActivityIndicator(false), navigation);
+
+                            setEmail("")
+                            setPassword("")
+                            signin({ email, password }, () => setShowActivityIndicator(false), navigation);
                         }}
                     >
                         <Text style={styles.signText}>Signin</Text>
