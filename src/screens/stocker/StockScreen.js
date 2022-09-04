@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { HEIGHT, WIDTH } from '../../constants/constants';
+import { HEIGHT, WIDTH, APP_COLOR } from '../../constants/constants';
 import { MaterialForm } from '../../components/MaterialForm';
 import { BottomSheet } from 'react-native-btr';
 import buifixApi from '../../api/buifixApi';
 import { AppActivityIndictor } from '../../components/AppActivityIndictor';
 import { Context as AuthContext } from '../../contexts/ApplicationContext';
+import { Ionicons, AntDesign, Feather } from '@expo/vector-icons';
 
 const findStock = async ({ token, setStok, setShowActivityIndicator }) => {
     try {
@@ -30,7 +31,7 @@ const findStock = async ({ token, setStok, setShowActivityIndicator }) => {
     }
 }
 
-const StockScreen = ({navigation}) => {
+const StockScreen = ({ navigation }) => {
 
     const [materialId, setMaterialId] = useState('');
     const [quantity, setQuantity] = useState('');
@@ -39,7 +40,7 @@ const StockScreen = ({navigation}) => {
     const [stock, setStok] = useState([]);
     const [showActivityIndicator, setShowActivityIndicator] = useState(false)
 
-    const { state } = useContext(AuthContext);
+    const { state, pushEmail } = useContext(AuthContext);
     const { token } = state;
 
     useEffect(() => {
@@ -53,6 +54,28 @@ const StockScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', width: WIDTH - 30, justifyContent: 'space-between', marginTop: 10 }}>
+                <Ionicons
+                    name="arrow-back" size={30}
+                    color={APP_COLOR}
+                    style={{ marginLeft: 10 }}
+                    onPress={() => navigation.goBack()}
+                />
+                <Feather
+                    name="download-cloud" size={27}
+                    color={APP_COLOR}
+                    style={{ marginLeft: 10 }}
+                    onPress={() => {
+                        let stocktoSend = stock;
+                        stocktoSend.map((item) => {
+                            delete item.activity
+                            delete item.owner
+                        })
+                        pushEmail({ data: stocktoSend, email: 'joelmuhinda4@gmail.com' })
+                        alert("report sent to your email please check, and make sure that you have verifyed email")
+                    }}
+                />
+            </View>
             <View style={styles.header}>
                 <Text style={styles.headerTitleText}>mid</Text>
                 <Text style={styles.headerTitleText}>m name</Text>
