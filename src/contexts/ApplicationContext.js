@@ -34,6 +34,9 @@ const AuthReducer = (state, action) => {
         case 'update_employee_list':
             return { ...state, employeeList: action.payload }
 
+        case 'emailresult':
+            return { ...state, emailResult: action.payload }
+
         case 'clear_cookies':
             return { ...state, paidEmployee: [], unpaidEmployee: [], employeeList: [] }
         default:
@@ -184,8 +187,14 @@ const updateEmployeeList = dispatch => (employee) => dispatch({ type: 'update_em
 const setErrorMessage = dispatch => (error) => dispatch({ type: 'set_error', payload: error })
 const clearErrorMessage = dispatch => () => dispatch({ type: 'clear_error' })
 const resetCookies = dispatch => () => dispatch({ type: 'clear_cookies' })
+
+const pushEmail = dispatch => async ({ data, email }) => {
+    const response = await buifixApi.post('/pushemail', { data, email });
+    dispatch({ type: 'emailresult', payload: response?.data?.message })
+}
+
 export const { Context, Provider } = createDataContext(
     AuthReducer,
-    { signup, signin, tryLocalSignin, signout, registerEmployee, registerWageEmployee, addPaidEmployee, addUnPaidEmployee, updateEmployeeList, payWageEmployee, setErrorMessage, clearErrorMessage },
-    { user: null, token: null, errorMessage: '', paidEmployee: [], unpaidEmployee: [], employeeList: [] }
+    { signup, signin, tryLocalSignin, signout, registerEmployee, registerWageEmployee, addPaidEmployee, addUnPaidEmployee, updateEmployeeList, payWageEmployee, setErrorMessage, clearErrorMessage, pushEmail },
+    { user: null, token: null, errorMessage: '', paidEmployee: [], unpaidEmployee: [], employeeList: [], emailResult: '' }
 )
