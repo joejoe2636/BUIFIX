@@ -88,12 +88,7 @@ const OwnerStockScreen = ({ navigation }) => {
                 renderItem={({ index, item }) => {
                     return (
                         <TouchableOpacity
-                            onPress={() => {
-                                setAction("Export")
-                                setMaterialId(item.mid)
-                                setQuantity(item.quantity)
-                                setMaterialFormVisibility(true);
-                            }}
+                            onPress={() => alert("Only stok manager allowed to import and export materials")}
                         >
                             <View style={styles.row}>
                                 <Text style={{ fontWeight: 'bold' }}>{item.mid}</Text>
