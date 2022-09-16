@@ -32,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
             <View style={styles.buttom_card}>
                 <View style={styles.button_group}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("StockerFlow")}
+                        onPress={() => navigation.navigate("OwnerStock")}
                         style={styles.button}
                     >
                         <MaterialIcons name="storage" style={styles.icon} />

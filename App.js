@@ -12,6 +12,7 @@ import AccountScreen from './src/screens/AccountScreen';
 import OwnerHomeScreen from './src/screens/owner/HomeScreen';
 import OwnerActivityScreen from './src/screens/owner/ActivityScreen';
 import OwnerEmployeeForm from './src/components/EmployeeForm'
+import OwnerStock from "./src/screens/owner/OwnerStockScreen"
 
 import StockerHomeScreen from './src/screens/stocker/HomeScreen';
 import StockScreen from './src/screens/stocker/StockScreen';
@@ -318,6 +319,7 @@ const App = () => {
         <stack.Screen name="Signin" component={SigninScreen} options={{ headerShown: false }} />
         <stack.Screen name="Signup" component={SignupScreen} options={{ headerShown: false }} />
         <stack.Screen name="OwnerFlow" component={OwnerFlow} options={{ headerShown: false }} />
+        <stack.Screen name='OwnerStock' component={OwnerStock} options= {{ headerShown: false}} />
 
         <stack.Screen
           name="EmployeeForm"
