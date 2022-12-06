@@ -8,6 +8,7 @@ import buifixApi from '../../api/buifixApi';
 import { Context as AuthContext } from '../../contexts/ApplicationContext';
 import { AppActivityIndictor } from '../../components/AppActivityIndictor';
 
+
 const fetchAllEmployee = async (token, setEmployees, updateEmployeeList, setShowActivityIndicator) => {
     try {
         setShowActivityIndicator(true);
@@ -26,6 +27,26 @@ const fetchAllEmployee = async (token, setEmployees, updateEmployeeList, setShow
         }
 
     } catch (error) {
+        setShowActivityIndicator(false);
+    }
+}
+
+const pushNotification = async ({email, amount, setShowActivityIndicator}) => {
+    try {
+        console.log(email, amount)
+        setShowActivityIndicator(true);
+        const response = await buifixApi.post('/pushnotification', {
+            email, amount
+        });
+
+        const { status, message} = response.data;
+
+        if (status === 201) {
+            setShowActivityIndicator(false)
+        }
+
+    } catch (error) {
+        console.log(error)
         setShowActivityIndicator(false);
     }
 }
@@ -78,7 +99,7 @@ const PaymentScreen = ({ navigation }) => {
                                     </TouchableOpacity>
 
                                     <TouchableOpacity
-                                        onPress={() => addPaidEmployee(item)}
+                                        onPress={() => pushNotification({email: item?.email ? item?.email : "joelmuhinda4@gmail.com", amount: item.wage, setShowActivityIndicator})}
                                     >
                                         <Entypo name="check" size={24} color={APP_COLOR} />
                                     </TouchableOpacity>

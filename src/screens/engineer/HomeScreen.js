@@ -19,6 +19,7 @@ const HomeScreen = ({navigation})=>{
     const[employee_phone, setEmployeePhone]= useState('');
     const[employee_nid, setEmployeeNid]= useState('');
     const[employee_wage, setEmployeeWage]= useState('');
+    const[employee_email, setEmployeeEmail]= useState('');
 
     return(
         <SafeAreaView style = {styles.container}>
@@ -80,12 +81,13 @@ const HomeScreen = ({navigation})=>{
                 <ScrollView>
                     <View style={{
                         backgroundColor: '#fff', 
-                        height: 350, 
-                        width: WIDTH, 
-                        marginVertical: HEIGHT * 0.25,
+                        height: HEIGHT * .6, 
+                        width: WIDTH * .9, 
+                        marginVertical: HEIGHT * 0.15,
                         borderRadius: 20,
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        alignSelf: "center"
                     }}>
 
                     <Text style={{fontSize: 25, textTransform: 'capitalize', fontWeight: 'bold'}}>Employee Details</Text>
@@ -132,6 +134,15 @@ const HomeScreen = ({navigation})=>{
                         style={{width: '80%', height: 60, fontSize: 18, borderBottomColor: 'grey', borderBottomWidth: .5}}
                     />
 
+                    <TextInput
+                        placeholder = "email"
+                        autoCapitalize = "none"
+                        autoCorrect = {false}
+                        value={employee_email}
+                        onChangeText = {(email)=> setEmployeeEmail(email)}
+                        style={{width: '80%', height: 60, fontSize: 18, borderBottomColor: 'grey', borderBottomWidth: .5}}
+                    />
+
                     <View  style={{width: '68%', marginTop: 20}}>
                         <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
                             <TouchableOpacity onPress = {()=>setAddEmployee(false)} style={{backgroundColor: 'red', width: 100, height: 40, justifyContent: 'center', alignItems: 'center', borderRadius: 10}}>
@@ -155,7 +166,7 @@ const HomeScreen = ({navigation})=>{
                                     setAddEmployee(false)
 
                                     setShowActivityIndicator(true)
-                                    registerWageEmployee({names: employee_name, nid: employee_nid, phone: employee_phone, wage: employee_wage, token}, closeActivityIndicator = ()=> setShowActivityIndicator(false))
+                                    registerWageEmployee({names: employee_name, nid: employee_nid, email: employee_email, phone: employee_phone, wage: employee_wage, token}, closeActivityIndicator = ()=> setShowActivityIndicator(false))
                                 }} 
                              >
                                 <Text style = {{color: '#fff', fontSize: 18, fontWeight: 'bold'}}>Save</Text>
