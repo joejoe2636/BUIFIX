@@ -26,7 +26,7 @@ const SigninScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>Welcome</Text>
-                <Text style={styles.title}>Back</Text>
+                <Text style={styles.title}>To BUIFIX</Text>
             </View>
             <View style={styles.form}>
                 <View>
